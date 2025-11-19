@@ -5,6 +5,7 @@
 !/images/*.png
 !/DeepCoder_Utils
 !/requirements.txt
+!/requirements310.txt
 !/*.ipynb
 !/src/*.py
 !/test/*.py
@@ -12,3 +13,5 @@
 !/examples/**/*.ipynb
 !/examples/**/trained-model/*.npz
 !/examples/**/trained-model/*.pickle
+!/dataset.pickle
+!/generate_dataset.py

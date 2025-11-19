@@ -1,7 +1,5 @@
 import dataclasses
 import numpy as np
-import chainer as ch
-from chainer import datasets
 from typing import List, Union, Dict, Set
 from .dsl import Function
 
@@ -54,7 +52,7 @@ class DatasetMetadata:
 
 @dataclasses.dataclass
 class Dataset:
-    dataset: ch.datasets.TupleDataset
+    dataset: list
     metadata: DatasetMetadata
 
 
@@ -76,7 +74,6 @@ def dataset_metadata(dataset, value_range: int = -1, max_list_length: int = -1) 
     num_inputs = 0
     symbols = set([])
     for entry in dataset:
-        entry = entry[0]
         num_inputs = max(num_inputs, len(entry.examples[0].inputs))
         if len(symbols) == 0:
             for symbol in entry.attribute.keys():
@@ -102,7 +99,6 @@ def prior_distribution(dataset) -> Dict[str, float]:
 
     prior: Dict[Function, float] = dict()
     for entry in dataset:
-        entry = entry[0]
         for symbol, value in entry.attribute.items():
             if not symbol in prior:
                 prior[symbol] = 0
@@ -245,26 +241,26 @@ def entry_encoding(entry: Entry, metadata: DatasetMetadata) -> EntryEncoding:
     return EntryEncoding(examples, attribute)
 
 
-class EncodedDataset(datasets.TransformDataset):
-    """
-    The dataset of the entry encodings for DeepCoder
-    This instance stores each entry as the tuple of
-    (the encoding of types, the encoding of values, the encoding of attribute).
-    """
+# class EncodedDataset(datasets.TransformDataset):
+#     """
+#     The dataset of the entry encodings for DeepCoder
+#     This instance stores each entry as the tuple of
+#     (the encoding of types, the encoding of values, the encoding of attribute).
+#     """
 
-    def __init__(self, dataset: Dataset):
-        """
-        Constructor
+#     def __init__(self, dataset: Dataset):
+#         """
+#         Constructor
 
-        Parameters
-        ----------
-        dataset : Dataset
-            The dataset and its metadata
-        """
+#         Parameters
+#         ----------
+#         dataset : Dataset
+#             The dataset and its metadata
+#         """
 
-        def transform(in_data):
-            entry = in_data[0]
-            encoding = entry_encoding(entry, dataset.metadata)
-            return encoding.examples.types, encoding.examples.values, encoding.attribute
+#         def transform(in_data):
+#             entry = in_data[0]
+#             encoding = entry_encoding(entry, dataset.metadata)
+#             return encoding.examples.types, encoding.examples.values, encoding.attribute
 
-        super(EncodedDataset, self).__init__(dataset.dataset, transform)
+#         super(EncodedDataset, self).__init__(dataset.dataset, transform)

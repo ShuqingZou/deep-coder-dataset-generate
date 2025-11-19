@@ -4,7 +4,6 @@ import pickle
 import os
 import contextlib
 import numpy as np
-import chainer as ch
 from typing import List, Tuple, Union, Dict, Callable, Iterator
 from .dataset import Primitive, Example, Entry, Dataset, dataset_metadata
 from .deepcoder_utils import generate_io_samples
@@ -309,9 +308,16 @@ def generate_dataset(functions: List[generate_io_samples.Function], spec: Datase
                 ))
 
     # Create metadata
-    dataset = ch.datasets.TupleDataset(dataset)
     metadata = dataset_metadata(
         dataset, spec.value_range, spec.max_list_length)
+    
+    for i in range(2):
+        print(dataset[i].source_code)
+        print(dataset[i].examples)
+        print(dataset[i].attribute)
+
+
+    print(f"generated {len(dataset)} examples")
 
     # Dump the dataset to the file
     with open(destination, "wb") as f:
