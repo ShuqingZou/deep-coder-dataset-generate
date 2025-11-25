@@ -248,7 +248,6 @@ def generate_dataset(functions: List[generate_io_samples.Function], spec: Datase
                 ))
     else:
         # Generate the fixed number of the dataset
-        entries = dict()
         n_entries = 0
         d = decorator.program_decorator if decorator is not None else lambda x: x
         for program in d(random_programs(functions_dsl, spec.min_program_length, spec.max_program_length)):
@@ -283,7 +282,7 @@ def generate_dataset(functions: List[generate_io_samples.Function], spec: Datase
                             l1 = len(entry.source_code.split("\n"))
                             l2 = len(e.source_code.split("\n"))
                             if l1 < l2:
-                                return l2
+                                return e.source_code
                             else:
                                 return "Ignore"
                 return "Add"
@@ -293,7 +292,7 @@ def generate_dataset(functions: List[generate_io_samples.Function], spec: Datase
                 n_entries += 1
                 entries[signature][entry.source_code] = entry
             elif pruned_result != "Ignore":
-                del entries[signature][entry.source_code]
+                del entries[signature][pruned_result]
                 entries[signature][entry.source_code] = entry
             
             if n_entries >= num_dataset:
@@ -311,12 +310,6 @@ def generate_dataset(functions: List[generate_io_samples.Function], spec: Datase
     metadata = dataset_metadata(
         dataset, spec.value_range, spec.max_list_length)
     
-    for i in range(2):
-        print(dataset[i].source_code)
-        print(dataset[i].examples)
-        print(dataset[i].attribute)
-
-
     print(f"generated {len(dataset)} examples")
 
     # Dump the dataset to the file
