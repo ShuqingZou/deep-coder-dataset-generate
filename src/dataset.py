@@ -3,10 +3,10 @@ import numpy as np
 from typing import List, Union, Dict, Set
 from .dsl import Function
 
-Primitive = int | List[int]
+Primitive = int | tuple[int]
 
 
-@dataclasses.dataclass
+@dataclasses.dataclass(frozen=True, eq=True)
 class Example:
     """
     An I/O example
@@ -16,11 +16,11 @@ class Example:
     inputs : List[Primitive]
     output : Primitive
     """
-    inputs: List[Primitive]
+    inputs: tuple[Primitive]
     output: Primitive
 
 
-@dataclasses.dataclass
+@dataclasses.dataclass(frozen=True, eq=True)
 class Entry:
     """
     The entry of this dataset
@@ -38,8 +38,11 @@ class Entry:
         the function or not.
     """
     source_code: str
-    examples: List[Example]
+    examples: tuple[Example]
     attribute: Dict[str, bool]
+
+    def __hash__(self):
+        return self.source_code.__hash__()
 
 
 @dataclasses.dataclass

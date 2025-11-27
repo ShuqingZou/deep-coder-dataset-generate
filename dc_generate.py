@@ -28,7 +28,7 @@ class DCGenerator:
             args.list_max,
             args.pickle_name,
             args.seed,
-            args.enum
+            args.enumerate
         )
     
     def __init__(self, num_programs, num_valid, dataset_dir, min_length, max_length,
@@ -134,7 +134,7 @@ if __name__ == '__main__':
     parser.add_argument("--list-max", type=int, default=20, help="The maximum length of lists used in the dataset.")
     parser.add_argument("--pickle-name", type=str, default="dataset")
     parser.add_argument("--seed", type=int, default=1234, help="RNG seed.")
-    parser.add_argument('--enum', action='store_true')
+    parser.add_argument('--enumerate', action='store_true')
 
     args = parser.parse_args()
 
