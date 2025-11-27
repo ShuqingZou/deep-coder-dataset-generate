@@ -2,7 +2,7 @@ import copy
 from .dsl import Function, Type, Variable, Expression, Program, Statement
 
 
-def normalize(program: Program):
+def normalize(program: Program) -> Program:
     """
     Return the normalized program
     This function applies 2 transformations:

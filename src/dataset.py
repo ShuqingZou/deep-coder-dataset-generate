@@ -3,7 +3,7 @@ import numpy as np
 from typing import List, Union, Dict, Set
 from .dsl import Function
 
-Primitive = Union[int, List[int]]
+Primitive = int | List[int]
 
 
 @dataclasses.dataclass

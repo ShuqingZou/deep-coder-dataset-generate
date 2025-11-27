@@ -21,7 +21,7 @@ class Signature:
     output_type: Type
     """
     input_types: List[Type]
-    output_type: Type
+    output_type: Type | None
 
     def __eq__(self, rhs):
         return self.input_types == rhs.input_types and self.output_type == rhs.output_type
